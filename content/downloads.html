@@ -1,0 +1,98 @@
+--- 
+title: Downloads 
+---
+
+* [Default images](http://www.raspberrypi.org/downloads)
+<!--* [Our custom image](http://asbradbury.org/tmp/raspi/2012-08-20-workshop-libs.img.zip)-->
+* Our modified libraries:
+   * [RPi.GPIO](/resources/RPi.GPIO-0.3.1a.zip)
+   * [I2C](/resources/i2c.py)
+   * [Image processing](/resources/imgproc.zip)
+
+If you already have a working Raspberry Pi Linux installation, you can <a href="#packages">skip ahead</a>.
+
+<!--
+## Using our custom image
+This is the easiest way of getting up and running if you do not already have a Raspberry Pi installation, but the image is likely to be out-of-date compared to one you make yourself.
+
+Download [our custom image](http://asbradbury.org/tmp/raspi/2012-08-20-workshop-libs.img.zip) to your computer (not your Raspberry Pi), then follow [these instructions](http://elinux.org/RPi_Easy_SD_Card_Setup#Easy_way) to write the image to your SD card.
+-->
+
+## Setting up your <!--own--> image
+Download the latest Raspbian image from [Raspberry Pi](http://www.raspberrypi.org/downloads) and write it to your SD card using [these instructions](http://elinux.org/RPi_Easy_SD_Card_Setup#Easy_way).
+
+Boot your Raspberry Pi up with a monitor and keyboard and your newly-written SD card. You should be greeted with the raspi-config screen.
+
+Run expand_rootfs, change the overscan if there are black bars around the edge of the display, and make sure the ssh server is running by default then hit finish and reboot. Changing your password is also recommended.
+
+You can do the rest via ssh if you wish: the IP address will be shown at bootup.
+
+Log in (username: pi, password: raspberry). First let's do an update of the system with:
+
+~~~
+sudo apt-get update && sudo apt-get upgrade
+
+~~~
+
+<a name="packages"></a>
+
+## Installing extra packages
+
+Now let's install some of the software packages we need to access external devices. In a terminal (Start > Accessories > LXTerminal):
+
+~~~
+sudo apt-get install python-smbus ipython bluetooth bluez-utils \
+python-cwiid python-scipy python-numpy python-pygame \
+python-setuptools libsdl-dev
+
+~~~
+
+## Installing custom libraries
+
+Download our custom RPi.GPIO, i2c and image processing libraries:
+
+~~~
+wget http://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/resources/RPi.GPIO-0.3.1a.zip
+unzip RPi.GPIO-0.3.1a.zip
+cd RPi.GPIO-0.3.1a 
+sudo python setup.py install
+cd ..
+
+wget http://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/resources/i2c.py
+sudo mv i2c.py /usr/local/lib/python2.7/dist-packages/i2c.py
+
+wget http://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/resources/imgproc.zip
+unzip imgproc.zip
+cd library 
+sudo make install
+cd ..
+~~~
+
+We need to have the i2c modules loaded by default so remove them from the blacklist by commenting them out (insert `#` at the beginning of the following lines):
+
+~~~
+blacklist spi-bcm2708 
+blacklist i2c-bcm2708 
+~~~
+
+in /etc/modprobe.d/raspi-blacklist.conf. Then add them in /etc/modules:
+
+~~~
+i2c-bcm2708
+spi-bcm2708
+i2c-dev
+~~~
+
+Make the Pi's Bluetooth discoverable on startup by opening /etc/rc.local and adding
+
+~~~
+hciconfig hci0 piscan
+~~~
+
+before `exit 0`.
+
+To allow us to access i2c from userspace, add ourselves to the i2c group:
+
+~~~
+sudo adduser $USER i2c
+~~~

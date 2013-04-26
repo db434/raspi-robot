@@ -1,0 +1,124 @@
+--- 
+title: Robot Assembly
+difficulty: introduction
+---
+
+<img class="scaled" src="/images/robot_chassis.JPG" />
+
+This tutorial shows you how to put together the robot chassis from a kit. Only basic tools are required. For more information on where to get a kit, see [here](/components/robot_chassis/).
+
+## REQUIREMENTS:
+
+{::options parse_block_html="true" /}
+<div class="requirements">
+
+* <img src="/images/chassis_plates_icon.JPG"/>Top and bottom plates
+* <img src="/images/chassis_bumper_icon.JPG"/> Bumper
+* <img src="/images/coil_holder_icon.JPG"/> Coil holder
+* <img src="/images/board_clips_icon.JPG"/> Board clips
+* <img src="/images/servo_icon.JPG" />Servo x 2
+* <img src="/images/wheels_icon.JPG" />Wheel x 2
+* <img src="/images/microswitch_icon.JPG" />Microswitch x 2
+* <img src="/images/battery_pack_icon.JPG"/> Battery pack
+* <img src="/images/battery_snap_icon.JPG" />PP3 battery snap
+* <a href="/components/regulator_board/"><img src="/images/regulator_board_icon.JPG"/> Regulator board</a>
+* <a href="/components/custom_pi_shield/"><img src="/images/custom_pi_shield_icon.JPG"/> Custom Pi shield</a>
+* <img src="/images/ball_caster_icon.JPG" />0.5" ball caster x 2
+* <img src="/images/spring_icon.JPG" />Spring x 2
+* <img src="/images/40mm_m3_spacer_icon.JPG" />40mm M3 spacer x 5
+* <img src="/images/3mm_m3_spacer_icon.JPG" />3mm M3 spacer x 2
+* <img src="/images/6mm_m3_screw_icon.JPG" />6mm M3 screw x 10
+* <img src="/images/20mm_m3_screw_icon.JPG" />20mm M3 screw x 6
+* <img src="/images/m3_nut_icon.JPG" />M3 nut x 6
+* <img src="/images/m3_washer_icon.JPG" />M3 washer x 4
+* <img src="/images/16mm_m2_screw_icon.JPG" />16mm M2 screw x 8
+* <img src="/images/m2_nut_icon.JPG" />M2 nut x 8
+* <img src="/images/insulated_wire_icon.JPG" />Insulated wire
+* <img src="/images/crimp_housing_icon.JPG" />0.1" crimp housing (3 pin)
+* <img src="/images/screwdriver_icon.JPG" />Phillips head screwdriver
+
+</div>
+
+## INSTRUCTIONS:
+
+Clip the battery pack retainer into the top side of the bottom plate. The bottom plate is the one with larger slots for the wheels. The top side is the one with lines and shapes etched into it.
+
+<img class="scaled" src="/images/robot_assembly003.JPG" />
+
+At each of the points marked with a cross, screw a 40mm spacer to the top side of the bottom plate using a 6mm M3 screw.
+
+<img class="scaled" src="/images/robot_assembly007.JPG" />
+
+Attach casters to the underside of the bottom plate at the positions marked with circles using M2 screws and nuts.
+
+<img class="scaled" src="/images/robot_assembly011.JPG" />
+
+Attach wires to the "common" (COM) terminal and the "normally open" (NO) terminal of each switch. The "normally closed" (NC) terminal is not required. Here, black wires have been used for the common terminals, as they will share a single connection to the Raspberry Pi.
+
+<img class="scaled" src="/images/robot_assembly013.JPG" />
+
+Crimp the other ends of the wires (and connect the two common lines together).
+
+<img class="scaled" src="/images/robot_assembly014.JPG" />
+
+Plug the wires into the crimp housing.
+
+<img class="scaled" src="/images/robot_assembly015.JPG" />
+
+Using M2 screws and nuts, attach the switches to the top side of the bottom plate. Rectangles etched into the plate show the correct positions.
+
+<img class="scaled" src="/images/robot_assembly017.JPG" />
+
+Push two 20mm M3 screws up through the slots in the bottom plate, then put on a washer, the bumper, and a second washer.
+
+<img class="scaled" src="/images/robot_assembly020.JPG" />
+
+Secure the bumper with M3 nuts. Do not over-tighten: the bumper should still move backwards and forwards quite freely.
+
+<img class="scaled" src="/images/robot_assembly021.JPG" />
+
+Attach a wheel to each servo, and place them in position on the top side of the bottom plate. The wires should go through the holes so that they are not in the way.
+
+<img class="scaled" src="/images/robot_assembly022.JPG" />
+
+Push the servo leads back up through the nearby slots so they do not drag along the floor.
+
+<img class="scaled" src="/images/robot_assembly023.JPG" />
+
+Attach springs to each side of the bumper. Zigzag lines on the bottom plate show the position. The bumper should be easy to depress on the left side, right side, and both sides at once. It should return to a non-depressed state when it is not being pressed.
+
+<img class="scaled" src="/images/robot_assembly024.JPG" />
+
+Attach the bumper uprights to the bumper. These stop one bumper getting stuck on top of another in the event of two robots colliding.
+
+<img class="scaled" src="/images/robot_assembly026.JPG" />
+
+Attach the regulator board as shown using 20mm M3 screws and 3mm M3 spacers between the bottom plate and the board.
+
+Weave the battery snap lead through the two square holes either side of the servos, and plug it into either power jack on the regulator board.
+
+Slot the battery pack into the space behind the servos and connect the battery snap.
+
+<img class="scaled" src="/images/robot_assembly027.JPG" />
+
+Clip the two parts of the coil holder together, and attach to the underside of the top plate using 20mm M3 screws and nuts.
+
+<img class="scaled" src="/images/robot_assembly029.JPG" />
+
+Attach the top plate to the bottom plate by screwing it in to the spacers with 6mm M3 screws. Pull all of the leads up through the holes shown to make them more accessible.
+
+<img class="scaled" src="/images/robot_assembly030.JPG" />
+
+Attach the board clips to the top of the robot.
+
+<img class="scaled" src="/images/robot_assembly031.JPG" />
+
+Clip a shield into place (possibly with a Raspberry Pi) and connect all of the loose wires. From left-to-right these connections are:
+
+* 4 pin power connection to regulator board
+* 2 [NFC coil](/nfc/) connections (optional)
+* Right motor
+* Left motor
+* 3 pin connection to microswitches
+
+<img class="scaled" src="/images/robot_assembly032.JPG" />

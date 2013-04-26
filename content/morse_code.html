@@ -1,0 +1,144 @@
+---
+title: Morse Code on an LED
+difficulty: beginner
+---
+
+This tutorial will guide you through safely connecting up an LED to your Raspberry Pi and being able to turn it on and off from Python. Then you will write a program to take input from the keyboard and send it out in Morse code from the LED.
+
+## REQUIREMENTS:
+
+{::options parse_block_html="true" /}
+<div class="requirements">
+
+* <a href="/components/raspberry_pi/"><img src="/images/raspberry_pi_icon.JPG"/> Raspberry Pi</a>
+* <a href="/components/ribbon_cable/"><img src="/images/ribbon_cable_icon.JPG" /> Ribbon cable</a>
+* <a href="/components/breakout_board/"><img src="/images/breakout_board_icon.JPG"/> Breakout board</a>
+* <a href="/components/breadboard/"><img src="/images/breadboard_icon.JPG" /> Breadboard</a>
+* <a href="/components/jumper_wires/"><img src="/images/wiring_kit_icon.JPG" /> Jumper wires</a>
+* <a href="/components/led/"><img src="/images/led_icon.JPG" /> LED</a>
+* <a href="/components/resistor/"><img src="/images/resistors_icon.JPG"/> 220Ω resistor
+
+</div>
+
+## INSTRUCTIONS:
+
+If you are using one of our SD cards or images the necessary tools should already be included; if not you will need to download and install the [Python RPi.GPIO library](/downloads/).
+
+Plug your ribbon cable into your breakout board and the breakout board into your breadboard. Plug the other end of the ribbon cable into your Raspberry Pi, being careful to ensure that the red stripe corresponding to pin 1 is on the correct side (it should be at the edge of the board).
+
+Wire up the LED through the 220Ω current-limiting resistor to a pin of your choice, observing the polarity of the LED. (The flat side of the LED should be connected to the ground pin, and the other side should be connected to the GPIO pin.) Your breadboard should now look something like this:
+
+<div class="figure" style="width: 100%">
+  <p> <img class="scaled" src="/images/morse-code-finished.JPG"/></p>
+</div>
+
+Here, pin 8 has been used to control the LED.
+
+If you wish to drive a much larger LED or another device which draws more power you will need to use a transistor so as not to burn out the Pi's pin.
+
+Now that our circuit is wired up correctly (you can connect to 3.3V instead of the GPIO pin to test it's working), it's time to get programming!
+
+In a terminal, type  
+
+~~~~~~
+sudo python  
+~~~~~~
+
+to get a Python console running as root – this is necessary as GPIO pin access isn't available in userspace.
+
+Now :
+
+~~~~~~
+import RPi.GPIO as GPIO
+import time
+pinNum = 8
+GPIO.setmode(GPIO.BCM) #numbering scheme that corresponds to breakout board and pin layout
+GPIO.setup(pinNum,GPIO.OUT) #replace pinNum with whatever pin you used, this sets up that pin as an output
+#set LED to flash forever
+while True:
+  GPIO.output(pinNum,GPIO.HIGH)
+  time.sleep(0.5)
+  GPIO.output(pinNum,GPIO.LOW)
+  time.sleep(0.5)	    
+~~~~~~
+
+Your LED should now be flashing: success! You can now control your LED from Python. You can stop the flashing by pressing Ctrl-C.
+
+Now let's write a program to translate your input to LED Morse code.
+
+Here's a dictionary to help you out:
+
+~~~~~~
+CODE = {' ': ' ', 
+        "'": '.----.', 
+        '(': '-.--.-', 
+        ')': '-.--.-', 
+        ',': '--..--', 
+        '-': '-....-', 
+        '.': '.-.-.-', 
+        '/': '-..-.', 
+        '0': '-----', 
+        '1': '.----', 
+        '2': '..---', 
+        '3': '...--', 
+        '4': '....-', 
+        '5': '.....', 
+        '6': '-....', 
+        '7': '--...', 
+        '8': '---..', 
+        '9': '----.', 
+        ':': '---...', 
+        ';': '-.-.-.', 
+        '?': '..--..', 
+        'A': '.-', 
+        'B': '-...', 
+        'C': '-.-.', 
+        'D': '-..', 
+        'E': '.', 
+        'F': '..-.', 
+        'G': '--.', 
+        'H': '....', 
+        'I': '..', 
+        'J': '.---', 
+        'K': '-.-', 
+        'L': '.-..', 
+        'M': '--', 
+        'N': '-.', 
+        'O': '---', 
+        'P': '.--.', 
+        'Q': '--.-', 
+        'R': '.-.', 
+        'S': '...', 
+        'T': '-', 
+        'U': '..-', 
+        'V': '...-', 
+        'W': '.--', 
+        'X': '-..-', 
+        'Y': '-.--', 
+        'Z': '--..', 
+        '_': '..--.-'}
+~~~~~~
+
+A few helpful tips:
+
+* `CODE['Z']` will return `'--..'`, the Morse code for Z
+* There are only upper case characters, `'z'.upper()` will return `'Z'`
+* A dot should correspond to the LED being on for about half the time of a dash
+* You will want a pause between each character and for a space
+* You can get input from a user with `raw_input('this is the prompt to be displayed ')`
+* You can loop through a string one character at a time with
+
+~~~~~~
+    for letter in string:
+      print(letter)
+~~~~~~
+
+Good Luck!
+
+Try out your code and see if you can decode the message again.
+
+An example of a finished program can be found [here](/resources/morse_code.py).
+
+## EXTENSION: Multiple LEDs
+
+Now that you know how to operate a single LED, try having a group of them. You could arrange that they all flash together to form a particular pattern or sequence. Perhaps you could make a [seven-segment display](http://en.wikipedia.org/wiki/Seven-segment_display).

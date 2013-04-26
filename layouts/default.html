@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= @item[:title] %> - Physical Computing with Raspberry Pi</title>
+    <link rel="stylesheet" type="text/css" href="/style.css" media="screen">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- you don't need to keep this, but it's cool for stats! -->
+    <meta name="generator" content="nanoc <%= Nanoc::VERSION %>"> 
+  </head>
+  
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <p>
+          <a href="http://www.raspberrypi.org"><img src=/images/Raspberry_Pi_Logo.png height="60" width="48" style="float:left;margin:-5px 20px 0 -5px;" /></a>
+          <a href="/">Physical computing with Raspberry Pi</a>
+        </p>
+      </div>
+      
+      <div id="main">
+        <% if @item[:title] != "Home" %>
+          <h1><%= @item[:title] %></h1>
+        <% end %>
+        <% if @item[:difficulty] %>
+          <h3>Difficulty: <%= @item[:difficulty] %></h3>
+        <% end %>
+        <%= yield %>
+      </div>
+      
+      <div id="sidebar">
+        <h2>Documentation</h2>
+        <ul>
+          <li><a href="/getting_started/">Getting Started</a></li>
+          <li><a href="/cheat_sheet/">Cheat Sheet</a></li>
+          <li><a href="/downloads/">Downloads</a></li>
+          <li><a href="/reference/">Reference</a></li>
+        </ul>
+        <h2>Tutorials</h2>
+        <ul>
+          <li><a href="/robot_assembly/">Robot Assembly</a></li>
+          <li><a href="/breadboard/">Using a Breadboard</a></li>
+        </ul>
+        <ul>
+          <li><a href="/morse_code/">Morse Code on an LED</a></li>
+          <li><a href="/buttons_and_switches/">Buttons and Switches</a></li>
+          <li><a href="/image_processing/">Basic Image Processing</a></li>
+        </ul>
+        <ul>
+          <li><a href="/blob_detection/">Blob Detection in Images</a></li>
+          <li><a href="/wiimote/">Interfacing with a Wiimote</a></li>
+          <li><a href="/robot_control/">Robot Control</a></li>
+        </ul>
+        <ul>
+          <li><a href="/face_detection/">Face Detection</a></li>
+          <li><a href="/nfc/">Near Field Communication</a></li>
+        </ul>
+      </div>
+
+      <div id="footer">
+        <p>
+        Please send any feedback or queries to <a href="mailto:oa235@cam.ac.uk,ej56@kent.ac.uk,aml66@cam.ac.uk,db434@cam.ac.uk">Olly Andrade, Ed Jones, Alex Lee and Daniel Bates</a>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

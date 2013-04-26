@@ -1,0 +1,45 @@
+INTRODUCTION
+
+This is the source for the "Physical Computing with Raspberry Pi" tutorials, written in August 2012. The original version can be found here:
+
+http://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/
+
+The authors are:
+* Olly Andrade     oa235@cam.ac.uk
+* Alex Lee         aml66@cam.ac.uk
+* Ed Jones         ej56@kent.ac.uk
+* Daniel Bates     Daniel.Bates@cl.cam.ac.uk
+
+
+COPYRIGHT
+
+The Raspberry Pi logo is subject to the following copyright rules:
+
+http://www.raspberrypi.org/trademark-rules
+
+We are allowed to use the logo as we are associated with the Foundation, but it is not clear whether this extends to translations. I will check up on this.
+
+
+CONTENTS
+
+config.yaml        build settings
+content            a file for each webpage, in kramdown syntax
+layouts            templates for webpages
+lib                nothing of interest to us
+Rules              instructions controlling how webpage source is parsed
+
+
+SETUP
+
+The website makes use of the cross-platform nanoc site generator: http://nanoc.ws/
+
+From a blank Ubuntu 12.04 installation, you will need to:
+
+sudo apt-get install ruby1.9.1-dev
+sudo gem install nanoc kramdown nokogiri
+
+
+BUILD
+
+1. Edit config.yaml to select the directory for the website to be built.
+2. From this directory, a simple "nanoc" will build the website.

@@ -1,0 +1,152 @@
+--- 
+title: Interfacing with a Wiimote
+difficulty: intermediate
+---
+
+This tutorial will show you how to connect a Wiimote to the Pi over Bluetooth. You will then be able to read input from it, including the state of the buttons and accelerometer and send it output, e.g. changing the LED state and playing with rumble.
+
+## REQUIREMENTS:
+
+{::options parse_block_html="true" /}
+<div class="requirements">
+
+* <a href="/components/raspberry_pi/"><img src="/images/raspberry_pi_icon.JPG"/> Raspberry Pi</a>
+* <img src="/images/bluetooth_dongle_icon.JPG"/> Bluetooth dongle
+* <img src="/images/wiimote_icon.JPG"/> Wiimote
+
+</div>
+
+## INSTRUCTIONS:
+
+It is recommended to use one of our SD cards or images, if you are not then you will need: python-cwiid and to set your Bluetooth in discoverable mode with `sudo hciconfig hci0 piscan`.
+
+Log into your Pi and start a Python console (or ipython if you want tab completion and other extra features).
+
+~~~
+python
+~~~
+
+To be able to use the Wiimote we have to import the necessary library so:
+
+~~~
+import cwiid
+~~~
+
+Connecting a Wiimote and saving it as `wm` to use later is now as simple as simultaneously pressing 1 + 2 on your Wiimote to make it discoverable then running:
+
+~~~
+wm = cwiid.Wiimote()
+~~~
+
+This is however liable to fail a few times and not estabalish a connection but raise a RuntimeError, we will handle this when writing a fuller script.
+
+Now that we have a Wiimote connected let's try and do something with it. Let's start by having it count in binary on the LEDs.
+
+~~~
+import time
+for i in range(16):
+  wm.led = i
+  time.sleep(0.5)
+~~~
+
+Now have it rumble for every multiple of 3:
+
+~~~
+for i in range(16):
+  wm.led = i
+  if i%3:
+    wm.rumble= False
+  else:
+    wm.rumble = True
+  time.sleep(0.5)
+wm.rumble = False
+~~~
+
+Now if we want to read values from the Wiimote we must turn on the reporting mode. First let's have it just report button presses.
+
+~~~
+wm.rpt_mode = cwiid.RPT_BTN
+~~~
+
+To then get all the information the Wiimote is reporting type:
+
+~~~
+wm.state
+~~~
+
+Try holding down a few buttons and running the program again to see how it changes.
+If you're interested only in the button presses try instead:
+
+~~~
+wm.state['buttons']
+~~~
+
+To make it more useful we can check for specific buttons being pressed. For instance if you want to see if the button '1' is being pressed:
+
+~~~
+if (wm.state['buttons'] & cwiid.BTN_1):
+  print ("button '1' pressed")
+~~~
+	
+If you want to see what other buttons there are to read, try:
+
+~~~
+dir(cwiid)
+~~~
+
+Or if you're using ipython hit tab after typing `cwiid.`.
+
+Now that we understand the basics of how to use the Wiimote we'll have a look at its key feature, the accelerometer. This is also very easy to access, first we can make the Wiimote report both button presses and accelerometer state with:
+
+~~~
+wm.rpt_mode = cwiid.RPT_BTN | cwiid.RPT_ACC
+~~~
+
+Let's just have a look at the data we get from it:
+
+~~~
+wm.state
+~~~
+
+now shows us we have an extra field called `acc` which is a 3-tuple. Let's have it regularly print the state so we can see how it changes as the Wiimote is moved.
+
+~~~
+while True:
+  print(wm.state['acc'])
+  time.sleep(0.3)
+~~~
+
+It appears that during normal movement the value centres at about 125 with 25 either way (going much higher if you flick it sharply or provide another strong acceleration rather than just gravity).
+
+So to make your script a bit more robust, here's a better way to connect to the Wiimote: it will try a few times, tell you how to connect and quit if a connection isn't made.
+
+~~~
+import cwiid 
+import time 
+import i2c 
+#connecting to the Wiimote. This allows several attempts 
+# as first few often fail. 
+print 'Press 1+2 on your Wiimote now...' 
+wm = None 
+i=2 
+while not wm: 
+  try: 
+    wm=cwiid.Wiimote() 
+  except RuntimeError: 
+    if (i>10): 
+      quit() 
+      break 
+    print "Error opening wiimote connection" 
+    print "attempt " + str(i) 
+    i +=1 
+
+#set Wiimote to report button presses and accelerometer state 
+wm.rpt_mode = cwiid.RPT_BTN | cwiid.RPT_ACC 
+ 
+#turn on led to show connected 
+wm.led = 1
+~~~
+
+What you now do is up to you! For information on projects other people have done look at [WiiBrew](http://wiibrew.org/wiki/List_of_homebrew_demos).
+
+Here's an example script of how to use the Wiimote to drive our robot: [wiimote.py](/resources/wiimote.py)

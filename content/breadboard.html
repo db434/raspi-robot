@@ -1,0 +1,63 @@
+--- 
+title: Using a Breadboard
+difficulty: introduction
+---
+
+A breadboard is a very useful device for prototyping circuits. It allows you to easily plug in and remove components and so if there are going to be many changes or if you just want to make a circuit quickly, it will be much quicker than soldering up your circuit.
+
+This tutorial will only be necessary for those who have never used a breadboard before or are not confident using one. It will guide you through how a breadboard works and how to make a very simple circuit.
+
+
+## REQUIREMENTS:
+
+{::options parse_block_html="true" /}
+<div class="requirements">
+
+* <a href="/components/raspberry_pi/"><img src="/images/raspberry_pi_icon.JPG"/> Raspberry Pi</a>
+* <a href="/components/ribbon_cable/"><img src="/images/ribbon_cable_icon.JPG" /> Ribbon cable</a>
+* <a href="/components/breakout_board/"><img src="/images/breakout_board_icon.JPG"/> Breakout board</a>
+* <a href="/components/breadboard/"><img src="/images/breadboard_icon.JPG" /> Breadboard</a>
+* <a href="/components/jumper_wires/"><img src="/images/wiring_kit_icon.JPG" /> Jumper wires</a>
+* <a href="/components/led/"><img src="/images/led_icon.JPG" /> LED</a>
+* <a href="/components/resistor/"><img src="/images/resistors_icon.JPG"/> 220Ω or 330Ω resistor
+
+</div>
+
+
+## BACKGROUND:
+
+See the [breadboard](/components/breadboard/) page for information on the internals of a breadboard.
+
+## INSTRUCTIONS:
+
+First we'll plug in the breakout board. The important thing here is to make sure that the two rows of pins end up on different sides of the bridge in the middle, otherwise you could damage your Pi when you connect it. Make sure that the pins are aligned with the holes and push down firmly. It should clip into place and the pins should now be below the plastic.
+
+<div class="figure" style="width: 100%">
+  <p> <img class="scaled" src="/images/breadboard-breakout.JPG"/>
+  Breakout board clipped in place.</p>
+</div>
+
+Next we'll connect the 3.3V (3V3 pin) to the power rail and ground (GND pin) to the ground rail. This isn't completely necessary and we won't make use of it for our circuit but it is good practice and will normally make a breadboard easier to use and help to identify problems. In the picture, the power rails on each side of the board are also connected.
+
+<div class="figure" style="width: 100%">
+  <p> <img class="scaled" src="/images/breadboard-power.JPG"/>
+  Power rails connected.</p>
+</div>
+
+Now let's wire up an LED to one of the GPIO pins. Once this is done you'll have the circuit for the [morse code tutorial](/morse_code/) so we suggest you have a go at that when done. Connecting up an LED requires making sure the LED is the right way round (the flat side with the short lead goes to ground) and that it doesn't draw so much current that it burns itself out so we put a current-limting resistor in place.
+
+The columns are connected together so we cannot just put everything in one column. This would mean there is no voltage across the LED so it won't light up, instead there is only a path from the GPIO pin to ground through the resistor: not what we want.
+
+<div class="figure" style="width: 100%">
+  <p> <img class="scaled" src="/images/breadboard-bad.JPG"/>
+  The LED's two leads are connected to the same column so it will not light up.</p>
+</div>
+
+The correct way to wire things up is to have a jumper from one of the GPIO pins to a free column, then the positive side of the LED in that same column and the ground in the adjacent one. Then use the resistor to connect the ground of the LED to the ground of the Pi by placing one end in the same column as the LED ground and the other in the ground rail.
+
+<div class="figure" style="width: 100%">
+  <p> <img class="scaled" src="/images/breadboard-good.JPG"/>
+  If your circuit looks like this, everything should work.</p>
+</div>
+
+Now you can plug in your Pi using the ribbon cable. Make sure the red stripe goes to the outside edge of the board. Try out the [morse code example](/resources/morse_code.py) on the Pi or follow the [tutorial](/morse_code/) to test it out.

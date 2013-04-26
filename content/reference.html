@@ -1,0 +1,109 @@
+--- 
+title: Reference
+---
+
+This page describes all of the functionality in the libraries we make use of throughout the tutorials.
+
+<a name="gpio"></a>
+
+## GPIO access
+
+In order to access the GPIO pins, you will need to import the RPi.GPIO library. To do this, insert `import RPi.GPIO` at the top of your Python source code. You will then need to prepend any method or value names from the library with `RPi.GPIO.`.
+
+setmode(mode)
+: Set the numbering scheme for the GPIO pins. For all tutorials on this website, `BCM` is used as `mode`.
+
+setup(pin, direction, pull_up_down=PUD_OFF)
+: Configure a particular GPIO pin as an input or output, optionally with a pull up/down resistor. `direction` is either `IN` or `OUT`. `pull_up_down` can be `PUD_OFF`, `PUD_UP` or `PUD_DOWN`. Our modified version of RPi.GPIO allows pin 4 to be set up as a general purpose clock using `setup(4, ALT0)`.
+
+setclock(pin, frequency)
+: Use the chosen pin as a clock of the given frequency. Only works with pin 4.
+
+input(pin)
+: Receive the current state of the chosen pin.
+
+output(pin, state)
+: Write the given state to a pin. `state` can be `HIGH`, `LOW`, `1`, `0`, `True` or `False`.
+
+<a name="i2c"></a>
+
+## I2C
+
+In order to communicate with servos (amongst other things), you will need to import the I2C library. To do this, insert `import i2c` at the top of your Python source code. You will then need to prepend any method or value names from the library with `i2c.`.
+
+**Important:** This method of controlling servos requires additional hardware but allows higher precision and less jitter than [direct GPIO control](/resources/servo.py). Our provided I2C library assumes you have a PCA9685 [PWM](http://en.wikipedia.org/wiki/Pulse-width_modulation) driver chip connected to the Raspberry Pi (see [wiring schematic](/resources/i2c_schematic.pdf)) using the I2C bus at its default address of 0x40 (it is possible to change this address in software). This is a surface mount chip, but our [custom shield](/components/custom_pi_shield/) provides one, as does this [Adafruit breakout board](http://www.adafruit.com/products/815).
+
+I2C(frequency=50)
+: Create an I2C instance which communicates at a given frequency. 50Hz is good for controlling servos, but anything between 40 and 1000Hz can be used. Higher frequencies give more control and avoid flicker.
+
+I2C.setSpeeds(left, right)
+: When combined with our [robot chassis](/components/robot_chassis/), set the speeds of the two motors. Values range from -100 to 100, with 0 being stationary.
+
+I2C.setPWM(pin, duty_cycle)
+: Used to set servos to particular speeds, or LEDs to particular brightnesses. A `duty_cycle` of 0 will give no brightness on an LED, 2047 will give half brightness, and 4095 will give full brightness.
+
+<a name="imgproc"></a>
+
+## Image processing
+
+SimpleCV is a library used for efficient computer vision tasks. Documentation can be found [here](http://simplecv.org/docs/SimpleCV.html). For the rest of the methods described here, you will need to `import imgproc`.
+
+delay(msec)
+: Delay execution for `msec` milliseconds.
+
+handleEvents()
+: Continually poll for events. Returns `True` on success, and `False` on quit.
+
+class Viewer
+: Viewer class, handles the creation and manipulation of a window; you may only have one window open at a time.
+
+Viewer(width, height, title)
+: Open an SDL window, ready to display an image.
+
+Viewer.displayImage(image)
+: Display an image in the window.
+
+del viewer
+: Close the view.
+
+class Image
+: A container for image data, with pixel level access as well as high level functionality.
+
+Image(image_ptr)
+: Initialises an image based on a C pointer.
+
+Image.copy()
+: Create a copy of an image container and its data, and return it.
+
+Image.drawRect(x, y, w, h, r, g, b)
+: Draw a unfilled coloured rectangle on an image.
+
+Image.chromaKey(r_key, g_key, b_key, threshold)
+: Test the image against a Chroma key, setting non-passing pixels to black.
+
+Image.detectBlobs()
+: Detect blobs in the image, returning a list of tuples of (x, y, width, height) of the rectangle bounds of the discovered blob.
+
+Image.detectFaces()
+: Detect faces in the image, returning a list of tuples of (x, y, width, height) of the rectangle bounds of the discovered face.
+
+Image[index]
+: Get a tuple of the red, green and blue values of a pixel. Co-ordinates are provided as a tuple of their x and y position. Example: `red, green, blue = img[x, y]` will set `red`, `green` and `blue` to the respective intensities of the pixel.
+
+Image[key] = value
+: Set the value of a pixel at a given co-ordinate provided in the tuple `key`. `key` is a tuple of the x and y position, and `value` is a 3 component tuple of the red, green and blue intensities. Example: `img[64, 32] = 255, 128, 0` sets the pixel at position x: 64 and y: 32 to a bright orange colour.
+
+del image
+: Handles the destruction of the image data.
+
+class Camera
+: Camera capture device: interfaces with a webcam allowing the user to grab images.
+
+Camera(width, height)
+: Initialise the camera, setting the size of the capture to `width` pixels wide and `height` pixels high.
+
+Camera.grabImage()
+: Grab a single image from the camera.
+
+del camera
+: Free the camera capture device.
